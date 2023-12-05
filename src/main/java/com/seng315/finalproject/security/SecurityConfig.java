@@ -7,7 +7,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -24,7 +23,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.io.IOException;
@@ -65,24 +63,21 @@ public class SecurityConfig {
 
     @Bean
     public AuthenticationEntryPoint authenticationEntryPoint() {
-        return new AuthenticationEntryPoint() {
-            @Override
-            public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
-                List<Map<String,String>> responses = new ArrayList<>();
-                Map<String, String> body = new HashMap<>();
-                ObjectMapper objectMapper = new ObjectMapper();
-                Date date = new Date();
-                SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyy HH:mm:ss");
-                body.put("Solution", "Login at /api/v1/login using POST (Username, Password) to obtain JWT Token");
-                body.put("Message","Unauthorized.  Your Authorization header is not valid.");
-                body.put("ResponseCode", "403");
-                body.put("Timestamp",  formatter.format(date.getTime()));
-                responses.add(body);
-                String json = objectMapper.writeValueAsString(responses);
-                response.setContentType("application/json");
-                response.getOutputStream().print(json);
-                response.setStatus(403);
-            }
+        return (request, response, authException) -> {
+            List<Map<String,String>> responses = new ArrayList<>();
+            Map<String, String> body = new HashMap<>();
+            ObjectMapper objectMapper = new ObjectMapper();
+            Date date = new Date();
+            SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyy HH:mm:ss");
+            body.put("Solution", "Login at /api/v1/login using POST (Username, Password) to obtain JWT Token");
+            body.put("Message","Unauthorized.  Your Authorization header is not valid.");
+            body.put("ResponseCode", "403");
+            body.put("Timestamp",  formatter.format(date.getTime()));
+            responses.add(body);
+            String json = objectMapper.writeValueAsString(responses);
+            response.setContentType("application/json");
+            response.getOutputStream().print(json);
+            response.setStatus(403);
         };
     }
 

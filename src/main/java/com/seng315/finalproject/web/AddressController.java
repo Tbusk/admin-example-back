@@ -2,8 +2,6 @@ package com.seng315.finalproject.web;
 
 import com.seng315.finalproject.domain.Address;
 import com.seng315.finalproject.domain.AddressRepository;
-import com.seng315.finalproject.domain.UserInfoRepository;
-import com.seng315.finalproject.domain.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +9,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
 import java.util.Map;
 import java.util.Optional;
 
@@ -53,7 +50,7 @@ public class AddressController {
     public String updateUserInfo(@RequestBody Map<String,String> formData) {
         Optional<Address> addressOptional = addressRepository.findById(Integer.parseInt(formData.get("addressID")));
 
-        if(addressOptional != null) {
+        if(addressOptional.isPresent()) {
             Address address = addressOptional.get();
             address.setAddressOne(formData.get("addressOne"));
             address.setAddressTwo(formData.get("addressTwo"));
@@ -89,7 +86,7 @@ public class AddressController {
 
         Optional<Address> addressOptional = addressRepository.findById(Integer.parseInt(formData.get("addressID")));
 
-        if(addressOptional != null) {
+        if(addressOptional.isPresent()) {
             Address address = addressOptional.get();
             addressRepository.delete(address);
             logger.info("User " + getUsername() + " deleted addressID " + address.getAddressID() + ".");

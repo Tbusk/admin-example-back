@@ -1,9 +1,7 @@
 package com.seng315.finalproject.web;
 
-import com.seng315.finalproject.domain.AddressRepository;
 import com.seng315.finalproject.domain.UserInfo;
 import com.seng315.finalproject.domain.UserInfoRepository;
-import com.seng315.finalproject.domain.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,14 +53,14 @@ public class UserInfoController {
     public String updateUserInfo(@RequestBody Map<String,String> formData) {
         Optional<UserInfo> userInfoOptional = userInfoRepository.findById(Integer.parseInt(formData.get("userInfoID")));
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
-        if(userInfoOptional != null) {
-            UserInfo userInfo= userInfoOptional.get();
+        if(userInfoOptional.isPresent()) {
+            UserInfo userInfo = userInfoOptional.get();
             userInfo.setEmailAddress(formData.get("emailAddress"));
             userInfo.setFirstName(formData.get("firstName"));
             userInfo.setLastName(formData.get("lastName"));
             try {
                 userInfo.setDateOfBirth((simpleDateFormat.parse(formData.get("dateOfBirth"))));
-            } catch (Exception e) {e.printStackTrace();}
+            } catch (Exception e) {System.out.println("Error in converting date of birth: " + e.getMessage());}
             userInfo.setPhoneNumber(formData.get("phoneNumber"));
             userInfoRepository.save(userInfo);
             logger.info("User " + getUsername() + " updated UserInfoID " + userInfo.getUserInfoID() + ".");
@@ -79,7 +77,11 @@ public class UserInfoController {
         userInfo.setEmailAddress(formData.get("emailAddress"));
         userInfo.setFirstName(formData.get("firstName"));
         userInfo.setLastName(formData.get("lastName"));
-        userInfo.setDateOfBirth(new Date(formData.get("dateOfBirth")));
+        try {
+            userInfo.setDateOfBirth(new Date(formData.get("dateOfBirth")));
+        } catch (Exception e) {
+            System.out.println("Error in converting date specified to date of birth value: " + e.getMessage());
+        }
         userInfo.setPhoneNumber(formData.get("phoneNumber"));
         userInfoRepository.save(userInfo);
         logger.info("User " + getUsername() + " added users info to db. ");

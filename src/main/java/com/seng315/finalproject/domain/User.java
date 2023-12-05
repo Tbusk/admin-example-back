@@ -2,7 +2,6 @@ package com.seng315.finalproject.domain;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.Generated;
 
 import java.util.Date;
 

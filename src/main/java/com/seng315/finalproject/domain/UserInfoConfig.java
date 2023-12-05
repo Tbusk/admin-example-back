@@ -9,10 +9,10 @@ import java.util.Collections;
 public class UserInfoConfig {
 
     @Nonnull
-    private String name;
+    private final String name;
     @Getter
     @Nonnull
-    private Collection<String> authorities;
+    private final Collection<String> authorities;
 
     public UserInfoConfig(@Nonnull String name, Collection<String> authorities) {
         this.name = name;

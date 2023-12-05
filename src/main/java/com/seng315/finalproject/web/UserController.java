@@ -4,15 +4,12 @@ import com.seng315.finalproject.domain.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.configurationprocessor.json.JSONArray;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
-import java.text.SimpleDateFormat;
 import java.util.Map;
 import java.util.Optional;
 
@@ -57,7 +54,7 @@ public class UserController {
     public String updateUser(@RequestBody Map<String,String> formData) {
         Optional<User> userOptional = userRepository.findById(Integer.parseInt(formData.get("userID")));
 
-        if(userOptional != null) {
+        if(userOptional.isPresent()) {
             User user = userOptional.get();
             user.setUserID(Integer.parseInt(formData.get("userID")));
             user.setUserInfoID(Integer.parseInt(formData.get("userInfoID")));
