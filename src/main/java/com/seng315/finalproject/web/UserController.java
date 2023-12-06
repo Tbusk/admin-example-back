@@ -1,11 +1,11 @@
 package com.seng315.finalproject.web;
 
-import com.seng315.finalproject.domain.*;
+import com.seng315.finalproject.domain.user.User;
+import com.seng315.finalproject.domain.user.UserRepository;
+import com.seng315.finalproject.security.AccountUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,18 +26,10 @@ public class UserController {
 
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
-    private String getUsername() {
-        Object user =  SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if(user instanceof UserDetails) {
-            return ((UserDetails)user).getUsername();
-        }
-        return "Anonymous";
-    }
-
     @GetMapping(path = "/list")
     public Iterable<User> getAllUsers() {
 
-        logger.info("User " + getUsername() + " used getAllUsers().") ;
+        logger.info("User " + AccountUtil.getUsername() + " used getAllUsers().") ;
 
         return userRepository.findAll();
     }
@@ -45,7 +37,7 @@ public class UserController {
     @GetMapping(path = "/{id}")
     public Optional<User> getUser(@PathVariable int id) {
 
-        logger.info("User " + getUsername() + " used getUser().") ;
+        logger.info("User " + AccountUtil.getUsername() + " used getUser().") ;
 
         return userRepository.findById(id);
     }
@@ -63,7 +55,7 @@ public class UserController {
             user.setRole(formData.get("role"));
             user.setActive(Boolean.parseBoolean(formData.get("active")));
             userRepository.save(user);
-            logger.info("User " + getUsername() + " updated " + user.getUsername() + ".");
+            logger.info("User " + AccountUtil.getUsername() + " updated " + user.getUsername() + ".");
             return "User " + user.getUsername() + " updated.";
         }
         return "User not found.";
@@ -71,8 +63,6 @@ public class UserController {
 
     @PostMapping
     public String addUser(@RequestBody Map<String,String>  formData) {
-
-        System.out.println(formData);
 
         User user = new User();
         Date date = new java.util.Date();
@@ -87,7 +77,7 @@ public class UserController {
             user.setActive(true);
             user.setCreatedAt(new Date(date.getTime()));
             userRepository.save(user);
-            logger.info("User " + getUsername() + " added " + user.getUsername() + " to database.");
+            logger.info("User " + AccountUtil.getUsername() + " added " + user.getUsername() + " to database.");
             return "User " + user.getUsername() + " added to database.";
         }
         return "User already exists.";

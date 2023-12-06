@@ -1,7 +1,7 @@
 package com.seng315.finalproject.web;
 
-import com.seng315.finalproject.domain.AuthRequest;
-import com.seng315.finalproject.domain.JwtResponse;
+import com.seng315.finalproject.domain.security.AuthRequest;
+import com.seng315.finalproject.domain.security.JwtResponse;
 import com.seng315.finalproject.security.JwtService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

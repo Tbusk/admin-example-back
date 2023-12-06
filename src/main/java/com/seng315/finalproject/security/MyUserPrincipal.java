@@ -1,6 +1,6 @@
 package com.seng315.finalproject.security;
 
-import com.seng315.finalproject.domain.User;
+import com.seng315.finalproject.domain.user.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

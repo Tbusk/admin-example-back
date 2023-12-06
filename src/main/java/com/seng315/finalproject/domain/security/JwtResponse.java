@@ -1,4 +1,4 @@
-package com.seng315.finalproject.domain;
+package com.seng315.finalproject.domain.security;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

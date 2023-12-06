@@ -1,4 +1,4 @@
-package com.seng315.finalproject.domain;
+package com.seng315.finalproject.domain.address;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

@@ -1,4 +1,4 @@
-package com.seng315.finalproject.domain;
+package com.seng315.finalproject.domain.user;
 
 import jakarta.persistence.*;
 import lombok.Data;

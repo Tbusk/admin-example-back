@@ -1,12 +1,11 @@
 package com.seng315.finalproject.web;
 
-import com.seng315.finalproject.domain.Address;
-import com.seng315.finalproject.domain.AddressRepository;
+import com.seng315.finalproject.domain.address.Address;
+import com.seng315.finalproject.domain.address.AddressRepository;
+import com.seng315.finalproject.security.AccountUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -22,18 +21,10 @@ public class AddressController {
 
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
-    private String getUsername() {
-        Object user =  SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if(user instanceof UserDetails) {
-            return ((UserDetails)user).getUsername();
-        }
-        return "Anonymous";
-    }
-
     @GetMapping(path = "/list")
     public Iterable<Address> getAllAddresses() {
 
-        logger.info("User " + getUsername() + " used getAllAddresses().") ;
+        logger.info("User " + AccountUtil.getUsername() + " used getAllAddresses().") ;
 
         return addressRepository.findAll();
     }
@@ -41,7 +32,7 @@ public class AddressController {
     @GetMapping(path = "/{id}")
     public Optional<Address> getAddress(@PathVariable int id) {
 
-        logger.info("User " + getUsername() + " used getAddress().") ;
+        logger.info("User " + AccountUtil.getUsername() + " used getAddress().") ;
 
         return addressRepository.findById(id);
     }
@@ -59,7 +50,7 @@ public class AddressController {
             address.setCountry(formData.get("country"));
             address.setZip(formData.get("zip"));
             addressRepository.save(address);
-            logger.info("User " + getUsername() + " updated addressID " + address.getAddressID() + ".");
+            logger.info("User " + AccountUtil.getUsername() + " updated addressID " + address.getAddressID() + ".");
             return "AddressID " + address.getAddressID() + " updated.";
         }
         return "Issue with updating Address.";
@@ -77,7 +68,7 @@ public class AddressController {
         address.setCountry(formData.get("country"));
         address.setZip(formData.get("zip"));
         addressRepository.save(address);
-        logger.info("User " + getUsername() + " created a new address. ");
+        logger.info("User " + AccountUtil.getUsername() + " created a new address. ");
         return "New address created.";
     }
 
@@ -89,7 +80,7 @@ public class AddressController {
         if(addressOptional.isPresent()) {
             Address address = addressOptional.get();
             addressRepository.delete(address);
-            logger.info("User " + getUsername() + " deleted addressID " + address.getAddressID() + ".");
+            logger.info("User " + AccountUtil.getUsername() + " deleted addressID " + address.getAddressID() + ".");
         }
         return "AddressID " + addressOptional.get().getAddressID() + " deleted.";
     }

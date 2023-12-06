@@ -1,7 +1,7 @@
 package com.seng315.finalproject.security;
 
-import com.seng315.finalproject.domain.User;
-import com.seng315.finalproject.domain.UserRepository;
+import com.seng315.finalproject.domain.user.User;
+import com.seng315.finalproject.domain.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
