@@ -57,7 +57,7 @@ public class AddressController {
     }
 
     @PostMapping
-    public String addUserInfo(@RequestBody Map<String,String> formData) {
+    public String addAddress(@RequestBody Map<String,String> formData) {
 
         Address address = new Address();
 
