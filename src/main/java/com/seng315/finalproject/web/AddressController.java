@@ -38,7 +38,7 @@ public class AddressController {
     }
 
     @PutMapping
-    public String updateUserInfo(@RequestBody Map<String,String> formData) {
+    public String updateAddress(@RequestBody Map<String,String> formData) {
         Optional<Address> addressOptional = addressRepository.findById(Integer.parseInt(formData.get("addressID")));
 
         if(addressOptional.isPresent()) {
